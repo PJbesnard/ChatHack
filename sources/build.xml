@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ProjectChatHack" default="build" basedir=".">
+
+	<fail message="Ant 1.10.4+ version is required!">
+		<condition>
+			<not>
+				<antversion atleast="1.10.4" />
+			</not>
+		</condition>
+	</fail>
+
+	<path id="test.classpath">
+		<pathelement path="build/test" />
+		<pathelement path="build/main" />
+		<fileset dir="${ant.home}/lib" includes="*.jar" />
+	</path>
+
+	<target name="build" description="clean build" depends="clean, test, doc" />
+
+	<target name="clean">
+		<delete dir="build" />
+		<delete dir="jar" />
+		<delete dir="doc" />
+	</target>
+
+	<target name="init">
+		<mkdir dir="build/main" />
+		<mkdir dir="build/test" />
+		<mkdir dir="build/test-report" />
+	</target>
+
+	<target name="compile" depends="init">
+		<javac destdir="build/main" srcdir="src/fr" includeantruntime="false" />
+		<javac destdir="build/test" classpathref="test.classpath" srcdir="src/tests" includeantruntime="false" />
+		<copy file="src/censure.txt" overwrite="true" todir="build/main"/>
+
+		<mkdir dir="jar/client" />
+		<mkdir dir="jar/server" />
+
+		<jar destfile="jar/client/ClientChatHack.jar">
+			<fileset dir="build/main/"/>
+			<manifest>
+				<attribute name="Main-Class" value="fr.upem.net.tcp.nonblocking.ClientChatHack" />
+			</manifest>
+		</jar>
+
+		<jar destfile="jar/server/ServerChatHack.jar">
+			<fileset dir="build/main/"/>
+			<manifest>
+				<attribute name="Main-Class" value="fr.upem.net.tcp.nonblocking.ServerChatHack" />
+			</manifest>
+		</jar>
+		<copy file="src/censure.txt" overwrite="true" todir="jar/server"/>
+
+	</target>
+
+	<target name="test.junit.launcher" depends="compile">
+		<junitlauncher haltOnFailure="true" printSummary="true">
+			<classpath refid="test.classpath" />
+			<testclasses outputdir="build/test-report">
+				<fileset dir="build/test">
+					<include name="**/*Test.class" />
+				</fileset>
+				<listener type="legacy-xml" sendSysOut="true" sendSysErr="true" />
+				<listener type="legacy-plain" sendSysOut="true" />
+			</testclasses>
+		</junitlauncher>
+	</target>
+
+	<target name="test.console.launcher" depends="compile">
+		<java classpathref="test.classpath" classname="org.junit.platform.console.ConsoleLauncher" fork="true" failonerror="true">
+			<arg value="--scan-classpath" />
+			<arg line="--reports-dir build/test-report" />
+		</java>
+		<junitreport todir="build/test-report">
+			<fileset dir="build/test-report">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="build/test-report/html" />
+		</junitreport>
+	</target>
+
+	<target name="doc" description="generate documentation">
+		<mkdir dir="doc" />
+		<javadoc destdir="doc" >
+    		<fileset dir="src" defaultexcludes="yes">
+         		<include name="**/*.java"/>
+         		<exclude name="tests/**"/>
+    		</fileset>
+		</javadoc>
+	</target>
+
+
+	<target name="test" depends="test.junit.launcher" />
+
+</project>
