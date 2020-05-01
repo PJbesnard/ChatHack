@@ -37,7 +37,7 @@ Their usage is described in User Manual.
 
 —— Sources ——
 
-All sources are placed in sources/src file.
+Sources are placed in sources/src file.
 
 
 —— Documentation ——
