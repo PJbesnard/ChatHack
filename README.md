@@ -9,20 +9,20 @@ installation and usage instructions" section or
 check the user manual.
 
 
-####  User Manual 
+###  User Manual 
 
 User manual is placed in manuals file and contain
 all informations about how use this project.
 
 
-####  Developper Manual 
+###  Developper Manual 
 
 Developper Manual is placed in manuals file and 
 describes architectural choices, difficulties 
 encountered and how the project has been done. 
 
 
-####  Executables 
+###  Executables 
 
 Executables are placed in sources/jar file after 
 using this command in the "sources" repertory:
@@ -35,17 +35,17 @@ ClientChatHack.jar which allows to load the client.
 Their usage is described in User Manual. 
 
 
-####  Sources 
+###  Sources 
 
 Sources are placed in sources/src file.
 
 
-####  Documentation
+###  Documentation
 
 Documentation is placed in sources/doc file. 
 
 
-#### RFC
+### RFC
 RFC describe the protocol used for this project. 
 
 
@@ -82,7 +82,7 @@ java -jar ClientChatHack.jar
 
 For more informations please refer to User Manual.
 
-#### Developed with
+### Developed with
 - [Java 11](https://www.oracle.com/fr/java/technologies/javase-jdk11-downloads.html)
 
 
